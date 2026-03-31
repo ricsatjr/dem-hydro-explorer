@@ -6,11 +6,12 @@ on:
       - '**.ipynb'
 
 permissions:
-  contents: write        # ← allows the Action to commit back
+  contents: write
 
 jobs:
   clean:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -20,28 +21,29 @@ jobs:
 
       - name: Strip widget metadata from notebooks
         run: |
-          python - <<'EOF'
-          import json, glob
+          python -c "
+import json, glob
 
-          for path in glob.glob("**/*.ipynb", recursive=True):
-              with open(path, 'r') as f:
-                  nb = json.load(f)
-              changed = False
-              if 'widgets' in nb.get('metadata', {}):
-                  del nb['metadata']['widgets']
-                  changed = True
-              for cell in nb.get('cells', []):
-                  for output in cell.get('outputs', []):
-                      if output.get('metadata'):
-                          output['metadata'] = {}
-                          changed = True
-              if changed:
-                  with open(path, 'w') as f:
-                      json.dump(nb, f, indent=1)
-                  print(f"  cleaned: {path}")
-              else:
-                  print(f"  ok:      {path}")
-          EOF
+for path in glob.glob('**/*.ipynb', recursive=True):
+    with open(path, 'r') as f:
+        nb = json.load(f)
+    changed = False
+    if 'widgets' in nb.get('metadata', {}):
+        del nb['metadata']['widgets']
+        changed = True
+    for cell in nb.get('cells', []):
+        for output in cell.get('outputs', []):
+            if output.get('metadata'):
+                output['metadata'] = {}
+                changed = True
+    if changed:
+        with open(path, 'w') as f:
+            json.dump(nb, f, indent=1)
+        print('cleaned: ' + path)
+    else:
+        print('ok: ' + path)
+print('Done.')
+"
 
       - name: Commit cleaned notebooks
         uses: stefanzweifel/git-auto-commit-action@v5
