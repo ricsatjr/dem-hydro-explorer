@@ -3,12 +3,14 @@ name: Clean notebook widget metadata
 on:
   push:
     paths:
-      - '**.ipynb'   # only triggers when a .ipynb file is pushed
+      - '**.ipynb'
+
+permissions:
+  contents: write        # ← allows the Action to commit back
 
 jobs:
   clean:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -24,29 +26,21 @@ jobs:
           for path in glob.glob("**/*.ipynb", recursive=True):
               with open(path, 'r') as f:
                   nb = json.load(f)
-
               changed = False
-
-              # Remove offending widgets key from notebook metadata
               if 'widgets' in nb.get('metadata', {}):
                   del nb['metadata']['widgets']
                   changed = True
-
-              # Clear output metadata from each cell
               for cell in nb.get('cells', []):
                   for output in cell.get('outputs', []):
                       if output.get('metadata'):
                           output['metadata'] = {}
                           changed = True
-
               if changed:
                   with open(path, 'w') as f:
                       json.dump(nb, f, indent=1)
                   print(f"  cleaned: {path}")
               else:
                   print(f"  ok:      {path}")
-
-          print("Done.")
           EOF
 
       - name: Commit cleaned notebooks
@@ -54,20 +48,3 @@ jobs:
         with:
           commit_message: "chore: strip widget metadata from notebooks"
           file_pattern: '**.ipynb'
-```
-
-Click **Commit new file**.
-
----
-
-### 3. That's it — here's what happens automatically from now on
-```
-You push a notebook to GitHub
-        ↓
-GitHub Action triggers (takes ~20 seconds)
-        ↓
-Python script strips the widget metadata
-        ↓
-Action commits the cleaned notebook back to your repo
-        ↓
-GitHub renders the notebook correctly ✅
