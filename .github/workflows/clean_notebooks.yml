@@ -19,31 +19,8 @@ jobs:
       - name: Install nbformat
         run: pip install nbformat --quiet
 
-      - name: Strip widget metadata from notebooks
-        run: |
-          python -c "
-import json, glob
-
-for path in glob.glob('**/*.ipynb', recursive=True):
-    with open(path, 'r') as f:
-        nb = json.load(f)
-    changed = False
-    if 'widgets' in nb.get('metadata', {}):
-        del nb['metadata']['widgets']
-        changed = True
-    for cell in nb.get('cells', []):
-        for output in cell.get('outputs', []):
-            if output.get('metadata'):
-                output['metadata'] = {}
-                changed = True
-    if changed:
-        with open(path, 'w') as f:
-            json.dump(nb, f, indent=1)
-        print('cleaned: ' + path)
-    else:
-        print('ok: ' + path)
-print('Done.')
-"
+      - name: Strip widget metadata
+        run: python scripts/clean_notebooks.py
 
       - name: Commit cleaned notebooks
         uses: stefanzweifel/git-auto-commit-action@v5
