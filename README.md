@@ -2,7 +2,9 @@
 
 > Interactive Google Colab notebook for SRTM DEM retrieval, terrain analysis, and hydrologic processing — featuring an interactive basemap, points of interest management, stream network extraction, and click-based watershed delineation. No API key required.
 
-[![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/)
+[![View Notebook](https://img.shields.io/badge/View-Notebook-orange?logo=jupyter)](https://nbviewer.org/github/ricsatjr/dem-hydro-explorer/blob/main/dem-hydro-explorer.ipynb)
+[![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ricsatjr/dem-hydro-explorer/blob/main/dem-hydro-explorer.ipynb)
+[![Copy to Drive](https://img.shields.io/badge/Copy%20to-Google%20Drive-blue?logo=googledrive)](https://colab.research.google.com/github/ricsatjr/dem-hydro-explorer/blob/main/dem-hydro-explorer.ipynb)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 [![Data: SRTM](https://img.shields.io/badge/Data-SRTM%2030m-blue.svg)](https://www.earthdata.nasa.gov/sensors/srtm)
 [![Open Source](https://img.shields.io/badge/Open%20Source-%E2%9C%93-brightgreen.svg)]()
