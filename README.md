@@ -30,7 +30,7 @@ The notebook is organised into numbered steps that run sequentially top to botto
 
 ```
 Step 0  →  Install dependencies (one-shot, ~60 seconds)
-Step 1  →  Configure settings (location, DEM source, stream threshold)
+Step 1  →  Imports and configuration (location, DEM source, stream threshold)
 Step 1.5→  Load Points of Interest (manual entry / paste GeoJSON / upload file)
 Step 2  →  Browse interactive basemap (OSM, Satellite, Topo, CartoDB)
              └─ Capture bounding box of study area
@@ -166,11 +166,47 @@ All libraries used are **free and open source**.
 
 ---
 
+## Dependencies
+
+All packages are installed automatically in **Step 0** and imported in **Step 1** of the notebook. Tested on Google Colab (Python 3.12.13) with the following versions:
+
+| Package | Version | Role |
+|---------|---------|------|
+| pysheds | 0.5 | Hydrologic processing |
+| rasterio | 1.5.0 | Raster I/O and clipping |
+| geopandas | 1.1.3 | Vector data and export |
+| shapely | 2.1.2 | Geometry operations |
+| fiona | 1.10.1 | Vector file I/O backend |
+| ipyleaflet | 0.20.0 | Interactive web map |
+| ipywidgets | 7.7.1 | UI controls and widgets |
+| numpy | 2.0.2 | Array operations |
+| matplotlib | 3.10.0 | Figures and visualisation |
+| scipy | 1.16.3 | KD-tree stream snapping |
+| requests | 2.32.4 | SRTM tile download |
+| traitlets | 5.7.1 | Widget trait validation |
+
+> These versions reflect the Google Colab environment at the time of development (March 2026). Colab updates its base environment periodically — if you encounter issues after a Colab update, pin the versions using `requirements.txt` (see below).
+
+### Running locally (outside Colab)
+
+A `requirements.txt` and `environment.yml` are provided in the repository root for users who want to run the notebook in a local Jupyter environment.
+
+```bash
+# pip
+pip install -r requirements.txt
+
+# conda
+conda env create -f environment.yml
+conda activate dem-hydro-explorer
+```
+
+---
+
 ## Usage
 
 1. Open the notebook in Google Colab
-2. Run **Step 0** to install dependencies (do this once per session)
-3. Adjust **Step 1** config if needed (default location: Banaue Rice Terraces, Philippines)
+2. Run **Step 0** to install dependencies (once per session)
+3. Run **Step 1** — adjust the config block if needed (default location: Banaue Rice Terraces, Philippines)
 4. Run all cells top to bottom
 5. In **Step 7**, enable Click Mode on the map and click a point to delineate a watershed
 6. Run **Step 8** to export all results
