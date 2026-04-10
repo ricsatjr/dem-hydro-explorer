@@ -46,7 +46,8 @@ Step 5  →  Hydrologic processing pipeline
 Step 6  →  Interactive stream threshold tuning (slider widget)
 Step 7  →  Watershed delineation
              └─ Click on map OR type coordinates
-             └─ Auto-snap to nearest stream cell
+             └─ Auto-snap to highest-accumulation stream cell within search radius
+             └─ Flow accumulation overlay for drainage intensity reference
              └─ Delineate upstream catchment + statistics + figure
 Step 8  →  Export all results (GeoJSON + GeoPackage + GeoTIFF + PNG)
 ```
@@ -67,7 +68,7 @@ POIs are overlaid on the basemap and all output figures, and exported as a dedic
 
 The pour point can be set in two ways:
 
-- **Click on the map** — enable Click Mode, click anywhere inside or on the stream network; the tool snaps automatically to the nearest stream cell
+- **Click on the map** — enable Click Mode, click anywhere inside or on the stream network; the tool snaps automatically to the highest-accumulation cell within a fixed pixel search radius, favouring the main channel over minor tributaries
 - **Type coordinates** — enter latitude/longitude directly into the input boxes
 
 The snapped point reports the D8 flow accumulation value and corresponding upstream drainage area in km². The delineated catchment boundary is then vectorised and statistics are computed (area, perimeter, elevation distribution, relief).
@@ -148,7 +149,7 @@ All libraries used are **free and open source**.
 | [GeoPandas](https://geopandas.org) | Vector data handling, GeoJSON/GeoPackage export, coordinate reference systems | BSD |
 | [Shapely](https://shapely.readthedocs.io) | Geometry operations — union, centroid, boundary extraction | BSD |
 | [Fiona](https://github.com/Toblerity/Fiona) | Vector file I/O backend (GeoJSON, GeoPackage) | BSD |
-| [scipy](https://scipy.org) | KD-tree for fast stream-cell snapping | BSD |
+| [scipy](https://scipy.org) | Morphological raster operations (`binary_erosion`) | BSD |
 | [NumPy](https://numpy.org) | Array operations throughout | BSD |
 
 ### Visualisation & Mapping
@@ -157,6 +158,7 @@ All libraries used are **free and open source**.
 |---------|------|---------|
 | [ipyleaflet](https://github.com/jupyter-widgets/ipyleaflet) | Interactive web map inside Colab (pan, zoom, click events, layer control) | MIT |
 | [Matplotlib](https://matplotlib.org) | All static figures (terrain, hydrology, watershed) | PSF/BSD |
+| [Pillow](https://python-pillow.org) | PNG encoding of flow accumulation overlay for ipyleaflet ImageOverlay | HPND |
 | [ipywidgets](https://github.com/jupyter-widgets/ipywidgets) | UI controls — sliders, buttons, text inputs, file upload | BSD |
 
 ### Data Retrieval
@@ -183,11 +185,12 @@ All packages are installed automatically in **Step 0** and imported in **Step 1*
 | ipywidgets | 7.7.1 | UI controls and widgets |
 | numpy | 2.0.2 | Array operations |
 | matplotlib | 3.10.0 | Figures and visualisation |
-| scipy | 1.16.3 | KD-tree stream snapping |
+| pillow | *(confirm version)* | Flow accumulation overlay encoding |
+| scipy | 1.16.3 | Morphological raster operations |
 | requests | 2.32.4 | SRTM tile download |
 | traitlets | 5.7.1 | Widget trait validation |
 
-> These versions reflect the Google Colab environment at the time of development (March 2026). Colab updates its base environment periodically — if you encounter issues after a Colab update, pin the versions using `requirements.txt` (see below).
+> These versions reflect the Google Colab environment as of 7 April 2026. Colab updates its base environment periodically — if you encounter issues after a Colab update, pin the versions using `requirements.txt` (see below).
 
 ### Running locally (outside Colab)
 
@@ -243,4 +246,4 @@ Python 3.10+ required.
 
 This project is licensed under the **GNU General Public License v3.0** — see [LICENSE](LICENSE) for details.
 
-All dependencies are licensed under MIT, BSD, PSF, or Apache 2.0 terms, which are compatible with GPLv3.
+All dependencies are licensed under MIT, BSD, PSF, Apache 2.0, or HPND terms, which are compatible with GPLv3.
