@@ -7,6 +7,6 @@ ipyleaflet==0.20.0
 ipywidgets==7.7.1
 numpy==2.0.2
 matplotlib==3.10.0
-scipy==1.16.3
+scipy==1.17.1
 requests==2.32.4
 traitlets==5.7.1
