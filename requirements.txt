@@ -5,7 +5,7 @@ shapely==2.1.2
 fiona==1.10.1
 ipyleaflet==0.20.0
 ipywidgets==7.7.1
-numpy==2.0.2
+numpy==2.4.4
 matplotlib==3.10.0
 scipy==1.16.3
 requests==2.32.4
